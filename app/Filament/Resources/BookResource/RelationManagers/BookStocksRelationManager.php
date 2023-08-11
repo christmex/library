@@ -37,12 +37,15 @@ class BookStocksRelationManager extends RelationManager
                     ])
                     // ->unique(ignoreRecord: true)
                     ->unique(modifyRuleUsing: function (Unique $rule, ?Model $record, string $operation) {
-                        if($operation == 'create'){
-                            return $rule->where('book_id', $this->ownerRecord->id);
-                        }elseif($operation == 'edit'){
-                            return $rule->where('book_id', $this->ownerRecord->id)->ignore($record->id);
-                        }
-                    })
+
+                        return $rule->where('book_id', $this->ownerRecord->id);
+                        // Klo gunakan yang dibawah, maka ignoreRecord nya dihapus
+                        // if($operation == 'create'){
+                        //     return $rule->where('book_id', $this->ownerRecord->id);
+                        // }elseif($operation == 'edit'){
+                        //     return $rule->where('book_id', $this->ownerRecord->id)->ignore($record->id);
+                        // }
+                    }, ignoreRecord: true)
                     // ->validationAttribute('full name')
                     ->required(),
                     Forms\Components\TextInput::make('qty')

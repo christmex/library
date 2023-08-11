@@ -21,4 +21,17 @@ class BookStock extends Pivot
     {
         return $this->belongsTo(Book::class);
     }
+
+    public function getBookLocationNameAttribute()
+    {
+        return $this->bookLocation->book_location_name;
+    }
+    public function getBookNameAttribute()
+    {
+        return $this->book->book_name;
+    }
+
+    public function transactions(){
+        return $this->hasMany(Transaction::class);
+    }
 }
