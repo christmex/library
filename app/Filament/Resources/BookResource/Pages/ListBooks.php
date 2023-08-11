@@ -40,6 +40,16 @@ class ListBooks extends ListRecords
                         //     return BookLocation::whereIn('id',$bookLocationId)->pluck('book_location_name','id');
                         // })
                         // ->visible(fn (Get $get): bool => $get('book_id'))
+                        // ->createOptionForm([
+                        //     \Filament\Forms\Components\TextInput::make('book_location_name')
+                        //         ->required()->unique(ignoreRecord: true),
+                        //     \Filament\Forms\Components\TextInput::make('book_location_label'),
+                        // ])
+                        // ->editOptionForm([
+                        //     \Filament\Forms\Components\TextInput::make('book_location_name')
+                        //         ->required()->unique(ignoreRecord: true),
+                        //     \Filament\Forms\Components\TextInput::make('book_location_label'),
+                        // ])
                         ->searchable()
                         ->required(),
                     \Filament\Forms\Components\TextInput::make('qty')
@@ -61,12 +71,13 @@ class ListBooks extends ListRecords
                         );
                         if (!$get->wasRecentlyCreated) {
                             $get->qty += $data['qty'];
-                            if($get->save()){
-                                Notification::make()
-                                    ->success()
-                                    ->title('Stock Added')
-                                    ->send();
-                            }
+                            $get->save();
+                            // if(){
+                            //     Notification::make()
+                            //         ->success()
+                            //         ->title('Stock Added')
+                            //         ->send();
+                            // }
                         }
 
                         Notification::make()
@@ -134,7 +145,7 @@ class ListBooks extends ListRecords
                                 // nanti disini cek jika buku ini ada di data transaksi dan lagi dipinjam, maka save saja, jadi semisal jadi 0 tetap 0,kecuali sudah tidak ada peminjaman yang aktif maka langsung delete saja
                                 if($get->save()){
                                     Notification::make()
-                                        ->success()
+                                        ->danger()
                                         ->title('Stock Removed')
                                         ->send();
                                 }
