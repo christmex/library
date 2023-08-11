@@ -8,7 +8,9 @@ use Filament\Tables;
 use App\Models\Author;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\BookLocation;
 use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\BookResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -137,7 +139,7 @@ class BookResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    // ->toggleable(isToggledHiddenByDefault: true)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
@@ -151,7 +153,35 @@ class BookResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
+                Tables\Actions\Action::make('print book label')
+                    ->icon('heroicon-o-printer')
+                    ->form([
+                            Forms\Components\Select::make('book_location_id')
+                                ->label('Book Location')
+                                ->options(fn(Model $record) =>BookLocation::whereIn('id',$record->bookStocks->where('qty','>',0)->pluck('book_location_id')->toArray())->pluck('book_location_name', 'id'))
+                                ->required(),
+                            Forms\Components\TextInput::make('qty')
+                                ->numeric()
+                                ->required()
+                    ])
+                    ->action(function(array $data, Model $record){
+                        return redirect()->route('book_print_book_label', ['book_location_id'=>$data['book_location_id'],'book_id'=>$record->id,'qty' => $data['qty']]);
+                    }),
+                Tables\Actions\Action::make('print book card')
+                    ->icon('heroicon-o-printer')
+                    ->form([
+                            Forms\Components\Select::make('book_location_id')
+                                ->label('Book Location')
+                                ->options(fn(Model $record) =>BookLocation::whereIn('id',$record->bookStocks->where('qty','>',0)->pluck('book_location_id')->toArray())->pluck('book_location_name', 'id'))
+                                ->required(),
+                            Forms\Components\TextInput::make('qty')
+                                ->numeric()
+                                ->required()
+                    ])
+                    ->action(function(array $data, Model $record){
+                        return redirect()->route('book_print_book_card', ['book_location_id'=>$data['book_location_id'],'book_id'=>$record->id,'qty' => $data['qty']]);
+                    }),
 
                 
                 // Tables\Actions\Action::make('addStock')

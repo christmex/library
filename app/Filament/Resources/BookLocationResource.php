@@ -2,16 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BookLocationResource\Pages;
-use App\Filament\Resources\BookLocationResource\RelationManagers;
-use App\Models\BookLocation;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\BookLocation;
+use Filament\Resources\Resource;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\BookLocationResource\Pages;
+use App\Filament\Resources\BookLocationResource\RelationManagers;
 
 class BookLocationResource extends Resource
 {
@@ -39,17 +41,38 @@ class BookLocationResource extends Resource
                 ->searchable(),
                 Tables\Columns\TextColumn::make('book_location_label')
                 ->searchable(),
+                Tables\Columns\TextColumn::make('bookStock.book.book_name')
+                ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
+                    Tables\Actions\Action::make('print book label')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn (Model $record): string => route('book_location_print_book_label', $record))
+                    ->openUrlInNewTab(),
+                    Tables\Actions\Action::make('print book card')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn (Model $record): string => route('book_location_print_book_card', $record))
+                    ->openUrlInNewTab(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\BulkAction::make('printBookLocation')
+                    // ->url(fn (Collection $records): string => route('print_book_label', ['records' => $records]))
+                    // ->action(function(Collection $records){
+                    //     // dd($records);
+                    //     // return view('welcome');
+                    //     // return view('print_book_label',['data' => $records]);
+                    //     // return redirect(route('book_location_print_book_label',['id' => $records->id]));
+                    // })
+                    // ->deselectRecordsAfterCompletion()
                 ]),
             ])
             ->emptyStateActions([
