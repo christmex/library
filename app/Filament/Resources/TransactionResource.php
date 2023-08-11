@@ -50,8 +50,63 @@ class TransactionResource extends Resource
                     ->label('Book Name')
                     ->required(),
                 Forms\Components\Select::make('member_id')
-                    ->options(Member::pluck('member_name','id'))
+                    // ->options(Member::pluck('member_name','id'))
+                    ->relationship(name: 'member', titleAttribute: 'member_name')
                     ->label('Member Name')
+                    ->createOptionForm([
+                        Forms\Components\Select::make('department_id')
+                            ->relationship(name: 'department', titleAttribute: 'department_name')
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('department_name')
+                                    ->required()
+                                    ->unique(ignoreRecord: false)
+                                    ->maxLength(255),
+                            ])
+                            ->editOptionForm([
+                                Forms\Components\TextInput::make('department_name')
+                                    ->required()
+                                    ->unique(ignoreRecord: false)
+                                    ->maxLength(255),
+                            ])
+                            ->searchable(),
+                        Forms\Components\TextInput::make('member_name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('member_phone_number')
+                            ->tel()
+                            ->maxLength(255),
+                        Forms\Components\FileUpload::make('member_profile_picture')
+                            ->preserveFilenames()
+                            ->directory('member-profile-picture')
+                            ->columnSpanFull(),
+                    ])
+                    ->editOptionForm([
+                        Forms\Components\Select::make('department_id')
+                            ->relationship(name: 'department', titleAttribute: 'department_name')
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('department_name')
+                                    ->required()
+                                    ->unique(ignoreRecord: false)
+                                    ->maxLength(255),
+                            ])
+                            ->editOptionForm([
+                                Forms\Components\TextInput::make('department_name')
+                                    ->required()
+                                    ->unique(ignoreRecord: false)
+                                    ->maxLength(255),
+                            ])
+                            ->searchable(),
+                        Forms\Components\TextInput::make('member_name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('member_phone_number')
+                            ->tel()
+                            ->maxLength(255),
+                        Forms\Components\FileUpload::make('member_profile_picture')
+                            ->preserveFilenames()
+                            ->directory('member-profile-picture')
+                            ->columnSpanFull(),
+                    ])
                     ->searchable()
                     ->required(),
                 Forms\Components\TextInput::make('transaction_book_qty')

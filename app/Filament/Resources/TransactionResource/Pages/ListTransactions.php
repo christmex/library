@@ -29,10 +29,71 @@ class ListTransactions extends ListRecords
                 // ->schema([
 
                     \Filament\Forms\Components\Select::make('member_id')
-                        ->options(Member::pluck('member_name','id'))
+                    // ->options(Member::pluck('member_name','id'))
+                        ->relationship(name: 'member', titleAttribute: 'member_name')
                         ->label('Member Name')
+                        ->createOptionForm([
+                            \Filament\Forms\Components\Select::make('department_id')
+                                ->relationship(name: 'department', titleAttribute: 'department_name')
+                                ->createOptionForm([
+                                    \Filament\Forms\Components\TextInput::make('department_name')
+                                        ->required()
+                                        ->unique(ignoreRecord: false)
+                                        ->maxLength(255),
+                                ])
+                                ->editOptionForm([
+                                    \Filament\Forms\Components\TextInput::make('department_name')
+                                        ->required()
+                                        ->unique(ignoreRecord: false)
+                                        ->maxLength(255),
+                                ])
+                                ->searchable(),
+                            \Filament\Forms\Components\TextInput::make('member_name')
+                                ->required()
+                                ->maxLength(255),
+                            \Filament\Forms\Components\TextInput::make('member_phone_number')
+                                ->tel()
+                                ->maxLength(255),
+                            \Filament\Forms\Components\FileUpload::make('member_profile_picture')
+                                ->preserveFilenames()
+                                ->directory('member-profile-picture')
+                                ->columnSpanFull(),
+                        ])
+                        ->editOptionForm([
+                            \Filament\Forms\Components\Select::make('department_id')
+                                ->relationship(name: 'department', titleAttribute: 'department_name')
+                                ->createOptionForm([
+                                    \Filament\Forms\Components\TextInput::make('department_name')
+                                        ->required()
+                                        ->unique(ignoreRecord: false)
+                                        ->maxLength(255),
+                                ])
+                                ->editOptionForm([
+                                    \Filament\Forms\Components\TextInput::make('department_name')
+                                        ->required()
+                                        ->unique(ignoreRecord: false)
+                                        ->maxLength(255),
+                                ])
+                                ->searchable(),
+                            \Filament\Forms\Components\TextInput::make('member_name')
+                                ->required()
+                                ->maxLength(255),
+                            \Filament\Forms\Components\TextInput::make('member_phone_number')
+                                ->tel()
+                                ->maxLength(255),
+                            \Filament\Forms\Components\FileUpload::make('member_profile_picture')
+                                ->preserveFilenames()
+                                ->directory('member-profile-picture')
+                                ->columnSpanFull(),
+                        ])
                         ->searchable()
                         ->required(),
+
+                    // \Filament\Forms\Components\Select::make('member_id')
+                    //     ->options(Member::pluck('member_name','id'))
+                    //     ->label('Member Name')
+                    //     ->searchable()
+                    //     ->required(),
 
                     \Filament\Forms\Components\Select::make('book_id')
                         ->options(Book::query()->whereHas('bookStocks',fn($q) => $q->where('qty','>',0))->pluck('book_name', 'id'))
