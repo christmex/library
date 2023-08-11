@@ -27,7 +27,20 @@ class MemberResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('department_id')
-                    ->options(Department::all()->pluck('department_name', 'id'))
+                    // ->options(Department::all()->pluck('department_name', 'id'))
+                    ->relationship(name: 'department', titleAttribute: 'department_name')
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('department_name')
+                            ->required()
+                            ->unique(ignoreRecord: false)
+                            ->maxLength(255),
+                    ])
+                    ->editOptionForm([
+                        Forms\Components\TextInput::make('department_name')
+                            ->required()
+                            ->unique(ignoreRecord: false)
+                            ->maxLength(255),
+                    ])
                     ->searchable(),
                 Forms\Components\TextInput::make('member_name')
                     ->required()
