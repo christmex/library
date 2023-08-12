@@ -110,8 +110,7 @@ class BookResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('book_cover')
-                ->square()
-                ->searchable(),
+                    ->square(),
                 Tables\Columns\TextColumn::make('book_name')
                     ->description(function(Book $record){
                         if($record->book_isbn){

@@ -53,6 +53,10 @@ class PenaltyResource extends Resource
                 Tables\Columns\TextColumn::make('penalty_cost')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->sortable()
+                    ->visible(fn () => auth()->user()->id == 1), 
             ])
             ->filters([
                 //
