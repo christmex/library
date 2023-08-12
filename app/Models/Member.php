@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\Multitenantable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Member extends Model
 {
-    use HasFactory;
+    use HasFactory, Multitenantable;
 
     protected $guarded = [];
 
@@ -32,4 +34,9 @@ class Member extends Model
     public function activeTransaction(){
         return $this->transactions()->where('transaction_returned_at',NULL);
     }
+
+    public function user(): BelongsTo 
+    { 
+        return $this->belongsTo(User::class); 
+    } 
 }

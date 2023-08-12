@@ -10,6 +10,7 @@ use App\Models\BookLocation;
 use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Rules\Unique;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\BookLocationResource\Pages;
@@ -28,7 +29,9 @@ class BookLocationResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('book_location_name')
-                    ->required()->unique(ignoreRecord: true),
+                    ->required()->unique(modifyRuleUsing: function (Unique $rule) {
+                        return $rule->where('user_id', auth()->user()->id);
+                    },ignoreRecord: true),
                 Forms\Components\TextInput::make('book_location_label'),
             ]);
     }
@@ -38,11 +41,15 @@ class BookLocationResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('book_location_name')
-                ->searchable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('book_location_label')
-                ->searchable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('bookStock.book.book_name')
-                ->searchable(),
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->sortable()
+                    ->visible(fn () => auth()->user()->id == 1), 
             ])
             ->filters([
                 //

@@ -66,6 +66,10 @@ class MemberResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('member_phone_number')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->sortable()
+                    ->visible(fn () => auth()->user()->id == 1), 
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
