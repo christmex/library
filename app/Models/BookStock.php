@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Multitenantable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BookStock extends Pivot
 {
-    use HasFactory;
+    use HasFactory, Multitenantable;
 
     protected $table = 'book_stocks';
     public function bookLocation(): BelongsTo
@@ -33,5 +34,9 @@ class BookStock extends Pivot
 
     public function transactions(){
         return $this->hasMany(Transaction::class);
+    }
+    public function user(): BelongsTo 
+    { 
+        return $this->belongsTo(User::class); 
     }
 }

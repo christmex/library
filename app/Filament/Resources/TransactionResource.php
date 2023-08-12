@@ -148,6 +148,10 @@ class TransactionResource extends Resource
                     ->label('Qty')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->sortable()
+                    ->visible(fn () => auth()->user()->id == 1), 
                 Tables\Columns\TextColumn::make('transaction_loaned_at')
                     ->label('Loaned At')
                     ->date()
@@ -263,8 +267,8 @@ class TransactionResource extends Resource
     {
         return [
             'index' => Pages\ListTransactions::route('/'),
-            'create' => Pages\CreateTransaction::route('/create'),
-            'edit' => Pages\EditTransaction::route('/{record}/edit'),
+            // 'create' => Pages\CreateTransaction::route('/create'),
+            // 'edit' => Pages\EditTransaction::route('/{record}/edit'),
         ];
     }
 

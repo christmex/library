@@ -43,8 +43,8 @@ class Book extends Model
      */
     public function bookStocks(): HasMany
     {
-        // return $this->hasMany(BookStock::class);
-        return $this->hasMany(BookStock::class)->where('user_id', auth()->id());
+        return $this->hasMany(BookStock::class);
+        // return $this->hasMany(BookStock::class)->where('user_id', auth()->id());
     }
     /**
      * The publishers that belong to the book.

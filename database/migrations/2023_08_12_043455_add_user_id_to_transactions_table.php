@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('book_locations', function (Blueprint $table) {
+        Schema::table('transactions', function (Blueprint $table) {
             $table->foreignId('user_id')->nullable()->after('id')->constrained();
         });
     }
@@ -21,12 +21,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('book_locations', function (Blueprint $table) {
+        Schema::table('transactions', function (Blueprint $table) {
+            // $table->dropForeign('user_id');
             $table->dropForeign(['user_id']);
             // $table->dropForeign('user_id');
             $table->dropColumn('user_id');
-            // $table->dropForeign('book_locations_user_id_foreign');
-            // $table->dropIndex('book_locations_user_id_index');
+            // $table->dropForeign('transactions_user_id_foreign');
+            // $table->dropIndex('transactions_user_id_index');
             // $table->dropColumn('user_id');
         });
     }

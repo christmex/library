@@ -132,6 +132,10 @@ class BookResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bookStocks.bookLocation.book_location_name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('bookStocks.user.name')
+                    ->searchable()
+                    ->sortable()
+                    ->visible(fn () => auth()->user()->id == 1), 
                 // Tables\Columns\TextColumn::make('book_isbn')
                 //     ->searchable(),
                 Tables\Columns\TextColumn::make('book_publish_year')
