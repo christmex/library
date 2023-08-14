@@ -1,0 +1,4 @@
+- [ ] dibagian menu buku tambah kolom untuk hitung total stok yang ada
+- [ ] atasi permasalahan delete buku yg berelasi
+- [ ] hilangkan bulk action kecuali di super admin
+- [ ] saat print judul kepanjangan maka akan terpotong, jadi hilangkan margin setelah judul daftar peminjaman & pengembalian buku 
