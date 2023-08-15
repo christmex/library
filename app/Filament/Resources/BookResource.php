@@ -44,8 +44,11 @@ class BookResource extends Resource
                         Forms\Components\Section::make('Images')
                             ->schema([
                                 Forms\Components\FileUpload::make('book_cover')
-                                    // ->image()
+                                    ->image()
                                     ->preserveFilenames()
+                                    ->imageEditor()
+                                    ->openable()
+                                    ->downloadable()
                                     ->directory('book-covers')
                                     ->columnSpanFull(),
                             ])->collapsible(),
