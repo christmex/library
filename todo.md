@@ -2,3 +2,4 @@
 - [ ] atasi permasalahan delete buku yg berelasi
 - [ ] hilangkan bulk action kecuali di super admin
 - [x] saat print judul kepanjangan maka akan terpotong, jadi hilangkan margin setelah judul daftar peminjaman & pengembalian buku 
+- [ ] Buatkan infolist builder untuk book location karna data buku banyak
