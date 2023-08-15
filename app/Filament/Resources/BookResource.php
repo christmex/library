@@ -12,6 +12,7 @@ use App\Models\BookLocation;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\Summarizers\Sum;
 use App\Filament\Resources\BookResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\BookResource\RelationManagers;
@@ -129,6 +130,8 @@ class BookResource extends Resource
                 Tables\Columns\TextColumn::make('bookTypes.book_type_name')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
+                // Tables\Columns\TextColumn::make('bookStocks.qty')
+                // ->summarize(Sum::make()->label('Total'))->label('Total'),
                 Tables\Columns\TextColumn::make('bookStocks.qty')
                     ->description(function(Book $record){
                         if($record->bookStocks->count() > 1){
@@ -137,6 +140,7 @@ class BookResource extends Resource
                     }, )
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bookStocks.bookLocation.book_location_name')
+                    ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bookStocks.user.name')
                     ->searchable()
