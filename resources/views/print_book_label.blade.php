@@ -34,7 +34,7 @@
             border: 2px solid black;
             text-align: center;
             padding: 0 5px;
-            margin: 2px;
+            margin: 1px;
             width:160px;
 
             float:left;
