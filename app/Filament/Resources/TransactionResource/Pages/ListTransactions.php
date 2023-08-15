@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\TransactionResource\Pages;
 
+use Carbon\Carbon;
 use App\Models\Book;
 use Filament\Actions;
 use App\Models\Member;
@@ -10,6 +11,7 @@ use App\Models\BookStock;
 use App\Models\Transaction;
 use App\Models\BookLocation;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,7 +29,9 @@ class ListTransactions extends ListRecords
             ->form([
                 // \Filament\Forms\Components\Repeater::make('transactions')
                 // ->schema([
-
+                    \Awcodes\Shout\Components\Shout::make('should-return-at')
+                    ->content('Should return at '.Carbon::createFromFormat('Y-m-d',Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->addDays(env('loanExpDays'))->format('Y-m-d'))->isoFormat('dddd, D MMMM YYYY'))
+                    ->type('warning'),
                     \Filament\Forms\Components\Select::make('member_id')
                     // ->options(Member::pluck('member_name','id'))
                         ->relationship(name: 'member', titleAttribute: 'member_name')
@@ -87,6 +91,7 @@ class ListTransactions extends ListRecords
                                 ->columnSpanFull(),
                         ])
                         ->searchable()
+                        ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->member_name} {$record->department_name}")
                         ->required(),
 
                     // \Filament\Forms\Components\Select::make('member_id')

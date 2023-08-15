@@ -130,7 +130,7 @@ class TransactionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('bookStock.book.book_cover')
-                    ->square()
+                    ->size(80)
                     ->label('Book Cover'),
                 Tables\Columns\TextColumn::make('bookStock.book.book_name')
                     ->label('Book Name')

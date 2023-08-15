@@ -110,11 +110,13 @@ class BookResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('book_cover')
-                    ->square(),
+                    ->size(80)
+                    // ->square()
+                    ,
                 Tables\Columns\TextColumn::make('book_name')
                     ->description(function(Book $record){
                         if($record->book_isbn){
-                            return "ISBN ".$record->book_isbn;
+                            return "ISBN ".$record->book_isbn."<br>";
                         }
                     })
                     ->searchable(),
@@ -128,6 +130,11 @@ class BookResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bookStocks.qty')
+                    ->description(function(Book $record){
+                        if($record->book_isbn){
+                            return "All Stock: ".$record->bookStocks->sum('qty');
+                        }
+                    }, )
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bookStocks.bookLocation.book_location_name')
                     ->searchable(),
@@ -149,6 +156,7 @@ class BookResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

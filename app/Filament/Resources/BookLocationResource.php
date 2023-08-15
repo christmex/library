@@ -51,6 +51,7 @@ class BookLocationResource extends Resource
                     ->sortable()
                     ->visible(fn () => auth()->user()->id == 1), 
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

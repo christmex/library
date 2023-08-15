@@ -39,6 +39,7 @@ class DepartmentResource extends Resource
                 Tables\Columns\TextColumn::make('department_name')
                     ->searchable(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

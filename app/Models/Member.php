@@ -20,7 +20,8 @@ class Member extends Model
 
     public function getDepartmentNameAttribute()
     {
-        return $this->department->department_name;
+        return !empty($this->department->department_name) ? "- ".$this->department->department_name : "";
+        // return $this->department->department_name;
     }
 
     public function department(){

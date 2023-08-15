@@ -59,7 +59,7 @@ class MemberResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('member_profile_picture'),
+                Tables\Columns\ImageColumn::make('member_profile_picture')->size(80),
                 Tables\Columns\TextColumn::make('member_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('department.department_name')
@@ -79,6 +79,7 @@ class MemberResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
