@@ -111,6 +111,7 @@ class BookResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('book_cover')
+                    ->extraImgAttributes(['loading' => 'lazy'])
                     ->size(80)
                     // ->square()
                     ,
