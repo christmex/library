@@ -116,7 +116,7 @@ class BookResource extends Resource
                 Tables\Columns\TextColumn::make('book_name')
                     ->description(function(Book $record){
                         if($record->book_isbn){
-                            return "ISBN ".$record->book_isbn."<br>";
+                            return "ISBN ".$record->book_isbn;
                         }
                     })
                     ->searchable(),
@@ -131,7 +131,7 @@ class BookResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bookStocks.qty')
                     ->description(function(Book $record){
-                        if($record->book_isbn){
+                        if($record->bookStocks->count() > 1){
                             return "All Stock: ".$record->bookStocks->sum('qty');
                         }
                     }, )
