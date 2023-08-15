@@ -34,7 +34,7 @@
             border: 2px solid black;
             text-align: center;
             padding: 0 5px;
-            margin: 5px;
+            margin: 1px;
             width:160px;
 
             float:left;
@@ -42,7 +42,8 @@
             min-height:170px;
         }
         .box .top {
-            border-bottom: 2px solid black
+            border-bottom: 2px solid black;
+            flex: 0;
         }
         h3 {
             font-size: 10px;
@@ -76,7 +77,6 @@
                         <div class="top">
                             <h3>PERPUSTAKAAN</h3>
                             <p>SEKOLAH KRISTEN BASIC</p>
-                            <h4 style="margin-top:10px">{{env('SCHOOL_NAME')}}</h4>
                         </div>
                         <div class="middle">
                             <h2 style="color:red">{{$entry->book->book_name}}</h2>
