@@ -124,6 +124,7 @@ class BookResource extends Resource
                             return "ISBN ".$record->book_isbn;
                         }
                     })
+                    ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('authors.author_name')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -137,18 +138,23 @@ class BookResource extends Resource
                 // Tables\Columns\TextColumn::make('bookStocks.qty')
                 // ->summarize(Sum::make()->label('Total'))->label('Total'),
                 Tables\Columns\TextColumn::make('bookStocks.qty')
-                    ->description(function(Book $record){
-                        if($record->bookStocks->count() > 1){
-                            return "All Stock: ".$record->bookStocks->sum('qty');
-                        }
-                    }, )
+                    // ->description(function(Book $record){
+                    //     if($record->bookStocks->count() > 1){
+                    //         return "All Stock: ".$record->bookStocks->sum('qty');
+                    //     }
+                    // }, )
+                    ->listWithLineBreaks()
+                    ->bulleted()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bookStocks.bookLocation.book_location_name')
-                    ->wrap()
+                    // ->wrap()
+                    ->listWithLineBreaks()
+                    ->bulleted()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bookStocks.user.name')
                     ->searchable()
                     ->sortable()
+                    ->listWithLineBreaks()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->visible(fn () => auth()->user()->id == 1), 
                 // Tables\Columns\TextColumn::make('book_isbn')

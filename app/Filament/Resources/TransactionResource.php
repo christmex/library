@@ -134,6 +134,7 @@ class TransactionResource extends Resource
                     ->label('Book Cover'),
                 Tables\Columns\TextColumn::make('bookStock.book.book_name')
                     ->label('Book Name')
+                    ->wrap()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bookStock.bookLocation.book_location_name')

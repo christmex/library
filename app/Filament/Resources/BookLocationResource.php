@@ -45,7 +45,9 @@ class BookLocationResource extends Resource
                 Tables\Columns\TextColumn::make('book_location_label')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bookStock.book.book_name')
-                    ->wrap()
+                    ->listWithLineBreaks()
+                    ->bulleted()
+                    // ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
