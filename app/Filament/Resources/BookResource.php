@@ -141,6 +141,7 @@ class BookResource extends Resource
                 Tables\Columns\TextColumn::make('bookStocks.user.name')
                     ->searchable()
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->visible(fn () => auth()->user()->id == 1), 
                 // Tables\Columns\TextColumn::make('book_isbn')
                 //     ->searchable(),

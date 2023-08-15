@@ -56,6 +56,7 @@ class PenaltyResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->visible(fn () => auth()->user()->id == 1), 
             ])
             ->defaultSort('created_at', 'desc')

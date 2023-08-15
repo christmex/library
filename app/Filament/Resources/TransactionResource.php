@@ -151,6 +151,7 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->visible(fn () => auth()->user()->id == 1), 
                 Tables\Columns\TextColumn::make('transaction_loaned_at')
                     ->label('Loaned At')
