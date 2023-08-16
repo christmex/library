@@ -67,6 +67,7 @@ class MemberResource extends Resource
                 Tables\Columns\TextColumn::make('member_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('department.department_name')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('member_phone_number')
                     ->searchable(),
