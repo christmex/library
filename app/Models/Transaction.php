@@ -13,6 +13,16 @@ class Transaction extends Model
 
     protected $guarded = [];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function($obj) {
+            if($obj->id && auth()->user()->email == 'super@sekolahbasic.sch.id'){
+                Penalty::where('transaction_id', $obj->id)->where('penalty_status', '!=','unpaid')->delete();
+            }
+        });
+    }
+
     public function member(){
         return $this->belongsTo(Member::class,'member_id','id');
     }

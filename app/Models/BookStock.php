@@ -13,6 +13,16 @@ class BookStock extends Pivot
     use HasFactory, Multitenantable;
 
     protected $table = 'book_stocks';
+
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function($obj) {
+            if($obj->id && auth()->user()->email == 'super@sekolahbasic.sch.id'){
+                Transaction::where('transaction_returned_at','!=',null)->where('book_stock_id', $obj->id)->delete();
+            }
+        });
+    }
     public function bookLocation(): BelongsTo
     {
         return $this->belongsTo(BookLocation::class);

@@ -19,6 +19,16 @@ class Book extends Model
     //     'book_cover' => 'array',
     // ];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function($obj) {
+            if($obj->id && auth()->user()->email == 'super@sekolahbasic.sch.id'){
+                BookStock::where('book_id', $obj->id)->delete();
+            }
+        });
+    }
+
     public function setBookNameAttribute($value)
     {
         $this->attributes['book_name'] = ucwords($value);
