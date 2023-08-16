@@ -179,7 +179,7 @@ class TransactionResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('returnBook')
                         ->requiresConfirmation()
                         ->action(function(Collection $records){

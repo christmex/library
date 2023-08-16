@@ -19,7 +19,10 @@ class BookStock extends Pivot
         parent::boot();
         static::deleting(function($obj) {
             if($obj->id && auth()->user()->email == 'super@sekolahbasic.sch.id'){
-                Transaction::where('transaction_returned_at','!=',null)->where('book_stock_id', $obj->id)->delete();
+                // Transaction::where('transaction_returned_at','!=',null)->where('book_stock_id', $obj->id)->delete();
+                if($obj->transactions->count()){
+                    $obj->transactions->where('transaction_returned_at','!=',null)->each->delete();
+                }
             }
         });
     }
@@ -43,7 +46,7 @@ class BookStock extends Pivot
     }
 
     public function transactions(){
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class,'book_stock_id','id');
     }
     public function user(): BelongsTo 
     { 

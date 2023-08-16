@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model
 {
@@ -24,7 +25,12 @@ class Book extends Model
         parent::boot();
         static::deleting(function($obj) {
             if($obj->id && auth()->user()->email == 'super@sekolahbasic.sch.id'){
-                BookStock::where('book_id', $obj->id)->delete();
+                // BookStock::where('book_id', $obj->id)->delete();
+                // DB::delete('delete author_book where book_id = ?', [$obj->id]);
+                DB::table('author_book')->where('book_id', $obj->id)->delete();
+                DB::table('book_book_type')->where('book_id', $obj->id)->delete();
+                // DB::where('book_id', $obj->id)->delete();
+                $obj->bookStocks->each->delete();
             }
         });
     }

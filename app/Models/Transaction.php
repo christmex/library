@@ -18,7 +18,10 @@ class Transaction extends Model
         parent::boot();
         static::deleting(function($obj) {
             if($obj->id && auth()->user()->email == 'super@sekolahbasic.sch.id'){
-                Penalty::where('transaction_id', $obj->id)->where('penalty_status', '!=','unpaid')->delete();
+                // Penalty::where('transaction_id', $obj->id)->where('penalty_status', '!=','unpaid')->delete();
+                if(!empty($obj->penalty)){
+                    $obj->penalty->where('penalty_status', '!=','unpaid')->each->delete();
+                }
             }
         });
     }
@@ -26,9 +29,9 @@ class Transaction extends Model
     public function member(){
         return $this->belongsTo(Member::class,'member_id','id');
     }
-    // public function penalty(){
-    //     return $this->hasOne(Penalty::class,);
-    // }
+    public function penalty(){
+        return $this->hasOne(Penalty::class,'transaction_id','id');
+    }
     public function bookStock(){
         return $this->belongsTo(BookStock::class,'book_stock_id','id');
     }
