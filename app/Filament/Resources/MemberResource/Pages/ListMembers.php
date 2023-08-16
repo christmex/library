@@ -19,34 +19,32 @@ class ListMembers extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
-            \Filament\Actions\Action::make('importMember')->color('success')
-            ->form([
-                \Awcodes\Shout\Components\Shout::make('should-return-at')
-                    ->content('Download the template file before upload')
-                    ->type('info'),
-                \Filament\Forms\Components\FileUpload::make('import_member')
-                    // ->preserveFilenames()
-                    // ->directory('import-member')
-                    ->storeFiles(false)
-                    ->columnSpanFull(),
-            ])
-            ->action(function(array $data){
-                DB::beginTransaction();
-                try {
-                    Excel::import(new MemberImport, $data['import_member']);
-                    DB::commit();
-                    Notification::make()
-                        ->success()
-                        ->title('Member imported')
-                        ->send();
-                } catch (\Throwable $th) {
-                    DB::rollback();
-                    Notification::make()
-                        ->danger()
-                        ->title($th->getMessage())
-                        ->send();
-                }
-            })
+            // \Filament\Actions\Action::make('importMember')->color('success')
+            // ->form([
+            //     \Awcodes\Shout\Components\Shout::make('should-return-at')
+            //         ->content('Download the template file before upload')
+            //         ->type('info'),
+            //     \Filament\Forms\Components\FileUpload::make('import_member')
+            //         ->storeFiles(false)
+            //         ->columnSpanFull(),
+            // ])
+            // ->action(function(array $data){
+            //     DB::beginTransaction();
+            //     try {
+            //         Excel::import(new MemberImport, $data['import_member']);
+            //         DB::commit();
+            //         Notification::make()
+            //             ->success()
+            //             ->title('Member imported')
+            //             ->send();
+            //     } catch (\Throwable $th) {
+            //         DB::rollback();
+            //         Notification::make()
+            //             ->danger()
+            //             ->title($th->getMessage())
+            //             ->send();
+            //     }
+            // })
         ];
     }
 }
