@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\Traits\Multitenantable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model
 {
-    use HasFactory;
+    use HasFactory, Multitenantable;
 
     protected $guarded = [];
 
@@ -86,4 +87,9 @@ class Book extends Model
     //     $authors = Author::whereIn('id', $authorIds)->pluck('author_name')->toArray();
     //     return implode(', ', $authors);
     // }
+
+    public function user(): BelongsTo 
+    { 
+        return $this->belongsTo(User::class); 
+    }
 }

@@ -6,8 +6,11 @@ use App\Models\Book;
 use Filament\Actions;
 use Filament\Forms\Get;
 use App\Models\BookStock;
+use App\Imports\BookImport;
 use App\Models\BookLocation;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Filament\Resources\BookResource;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
@@ -164,7 +167,33 @@ class ListBooks extends ListRecords
                 ->label('More actions')
                 ->icon('heroicon-m-ellipsis-vertical')
                 ->color('primary')
-                ->button()
+                ->button(),
+            \Filament\Actions\Action::make('importBook')->color('success')
+                ->form([
+                    \Awcodes\Shout\Components\Shout::make('should-return-at')
+                        ->content('Download the template file before upload')
+                        ->type('info'),
+                    \Filament\Forms\Components\FileUpload::make('import_book')
+                        ->storeFiles(false)
+                        ->columnSpanFull(),
+                ])
+                ->action(function(array $data){
+                    DB::beginTransaction();
+                    try {
+                        Excel::import(new BookImport, $data['import_book']);
+                        DB::commit();
+                        Notification::make()
+                            ->success()
+                            ->title('Book imported')
+                            ->send();
+                    } catch (\Throwable $th) {
+                        DB::rollback();
+                        Notification::make()
+                            ->danger()
+                            ->title($th->getMessage())
+                            ->send();
+                    }
+                })
 
         ];
     }

@@ -126,6 +126,11 @@ class BookResource extends Resource
                     })
                     ->wrap()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->visible(fn () => auth()->user()->id == 1), 
                 Tables\Columns\TextColumn::make('authors.author_name')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
