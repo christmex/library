@@ -65,7 +65,8 @@ class MemberResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('member_profile_picture')->size(80),
                 Tables\Columns\TextColumn::make('member_name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('department.department_name')
                     ->searchable()
                     ->sortable(),
