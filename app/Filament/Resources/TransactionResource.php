@@ -182,6 +182,8 @@ class TransactionResource extends Resource
                     // Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('returnBook')
                         ->requiresConfirmation()
+                        ->icon('heroicon-m-arrows-right-left')
+                        ->color('warning')
                         ->action(function(Collection $records){
                             DB::beginTransaction();
                             try {
