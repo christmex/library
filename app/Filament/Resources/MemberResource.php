@@ -49,6 +49,10 @@ class MemberResource extends Resource
                     ->tel()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('member_profile_picture')
+                    ->image()
+                    ->imageEditor()
+                    ->openable()
+                    ->downloadable()
                     ->preserveFilenames()
                     ->directory('member-profile-picture')
                     ->columnSpanFull(),
