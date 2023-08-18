@@ -83,6 +83,16 @@ class TransactionChart extends ChartWidget
                     // 'algorithm' => 'lttb',
                 ]
             ],
+            'scales'=> [
+                'y' => [
+                    'beginAtZero' => true
+                ]
+                // 'yAxes'=> [[
+                //     'ticks'=> [
+                //         'beginAtZero' => true
+                //     ]
+                // ]]
+            ]
         ];
     }
     
