@@ -47,6 +47,7 @@ class BookResource extends Resource
                                     ->image()
                                     ->preserveFilenames()
                                     ->imageEditor()
+                                    ->maxSize(2048)
                                     ->openable()
                                     ->downloadable()
                                     ->directory('book-covers')
