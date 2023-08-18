@@ -204,7 +204,8 @@ class TransactionResource extends Resource
                                             if($now > $threeDaysNext){
                                                 // Calculate the difference between the two dates.
                                                 $diff = Carbon::createFromFormat('Y-m-d', $threeDaysNext)->diff($now);
-                                                $penaltyCost = $diff->days * env('penaltyCost');
+                                                // i add + 1 supaya jika 3 hari setelah peminjaman adalah 17 dan hari ini 18, maka akan dihitung telat 1 hari, karna carbon tidak menganggap 17 dan 18 itu selisih 1 haari, kecuali di hari berikutnya 17 dan 19 ituadalah selisih 1 hari
+                                                $penaltyCost = ($diff->days + 1) * env('penaltyCost');
                                                 $isTitlePenaltySet = true;
                                                 Penalty::create([
                                                     'transaction_id' => $value->id,
