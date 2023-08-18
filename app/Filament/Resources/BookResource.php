@@ -51,6 +51,7 @@ class BookResource extends Resource
                                     ->openable()
                                     ->downloadable()
                                     ->directory('book-covers')
+                                    ->hint('Maximal file 2mb')
                                     ->columnSpanFull(),
                             ])->collapsible(),
 
