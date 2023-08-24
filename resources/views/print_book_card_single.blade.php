@@ -71,7 +71,6 @@
                     <div class="top">
                         <h3>PERPUSTAKAAN</h3>
                         <h3>SEKOLAH KRISTEN BASIC</h3>
-                        <h4 style="margin-top:10px">{{env('SCHOOL_NAME')}}</h4>
                     </div>
                     <div class="bottom">
                         <h3 style="margin-top: 10px; margin-bottom: 15px">DAFTAR PEMINJAMAN & PENGEMBALIAN BUKU</h3>
