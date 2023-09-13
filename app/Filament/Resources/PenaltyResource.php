@@ -25,7 +25,7 @@ class PenaltyResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Textarea::make('penalty_description'),
             ]);
     }
 
@@ -46,9 +46,7 @@ class PenaltyResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction.member.department_name')
-                    ->label('Member Department')
-                    ->searchable()
-                    ->sortable(),
+                    ->label('Member Department'),
                 Tables\Columns\TextColumn::make('transaction.transaction_loaned_at')
                     ->label('Loaned At')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -71,6 +69,9 @@ class PenaltyResource extends Resource
                 Tables\Columns\TextColumn::make('penalty_cost')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('penalty_description')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->sortable()
@@ -82,7 +83,7 @@ class PenaltyResource extends Resource
                 //
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
