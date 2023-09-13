@@ -41,6 +41,18 @@ class PenaltyResource extends Resource
                     ->label('Member\'s Name')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('transaction.member.department_name')
+                    ->label('Member Department')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('transaction.transaction_loaned_at')
+                    ->label('Loaned At')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('transaction.transaction_returned_at')
+                ->label('Returned At')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\SelectColumn::make('penalty_status')
                     ->options([
                         'unpaid' => 'Unpaid',
