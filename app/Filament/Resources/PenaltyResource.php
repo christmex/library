@@ -36,6 +36,7 @@ class PenaltyResource extends Resource
                 Tables\Columns\TextColumn::make('transaction.bookStock.book.book_name')
                     ->label('Book Name')
                     ->searchable()
+                    ->wrap()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction.member.member_name')
                     ->label('Member\'s Name')
