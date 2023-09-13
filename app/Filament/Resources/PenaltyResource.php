@@ -33,6 +33,9 @@ class PenaltyResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('transaction.bookStock.book.book_cover')
+                    ->size(80)
+                    ->label('Book Cover'),
                 Tables\Columns\TextColumn::make('transaction.bookStock.book.book_name')
                     ->label('Book Name')
                     ->searchable()
