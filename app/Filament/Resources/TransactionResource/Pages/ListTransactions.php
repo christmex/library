@@ -30,7 +30,37 @@ class ListTransactions extends ListRecords
                 // \Filament\Forms\Components\Repeater::make('transactions')
                 // ->schema([
                     \Awcodes\Shout\Components\Shout::make('should-return-at')
-                    ->content('Should return at '.Carbon::createFromFormat('Y-m-d',Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->addDays(env('loanExpDays'))->format('Y-m-d'))->isoFormat('dddd, D MMMM YYYY'))
+                    ->content(function(){
+                        // $loanedDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
+                        // $dueDate = Carbon::createFromFormat('Y-m-d',Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->addDays(env('loanExpDays'))->format('Y-m-d'));
+
+                        $loanedDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
+                        $dueDate = $loanedDate->addDays(env('loanExpDays'))->format('Y-m-d');
+                        $Blacklist_days = ['Saturday','Sunday'];
+
+
+
+                        $blacklistDueDate = in_array(Carbon::createFromFormat("Y-m-d", $dueDate)->format("l"),$Blacklist_days);
+                        // dd($blacklistDueDate);
+                        if($blacklistDueDate){
+                            // Get the date
+                            $dueDate = $loanedDate;
+
+                            // Calculate the days until the next Monday (0 = Sunday, 1 = Monday, 2 = Tuesday, etc.)
+                            $daysUntilMonday = 7 - $dueDate->dayOfWeek + 1;
+
+                            // Add the days to the get the next Monday
+                            $nextMonday = $dueDate->addDays($daysUntilMonday);
+
+                            // Format the date as a string if needed
+                            $dueDate = $nextMonday->format('Y-m-d');
+                            // 
+                        }
+                        
+                        return 'If you loan today it should return at '.Carbon::createFromFormat('Y-m-d',Carbon::createFromFormat('Y-m-d', $dueDate)->format('Y-m-d'))->isoFormat('dddd, D MMMM YYYY');
+
+
+                    })
                     ->type('warning'),
                     \Filament\Forms\Components\Select::make('member_id')
                     // ->options(Member::pluck('member_name','id'))
@@ -121,6 +151,7 @@ class ListTransactions extends ListRecords
                         ->required(),
                     \Filament\Forms\Components\TextInput::make('qty')
                         ->numeric()
+                        // ->default(1) // if we are set this it will show previous field so it wont hide previous field
                         ->minValue(1)
                         ->visible(fn (Get $get): ?bool => $get('book_location_id'))
                         ->live()

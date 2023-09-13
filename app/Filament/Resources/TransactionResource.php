@@ -145,6 +145,10 @@ class TransactionResource extends Resource
                     ->label('Member name')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('member.department_name')
+                    ->label('Member Department')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('transaction_book_qty')
                     ->label('Qty')
                     ->numeric()
@@ -197,13 +201,32 @@ class TransactionResource extends Resource
                                         BookStock::find($value->book_stock_id)->increment('qty',$value->transaction_book_qty);
 
                                         // Check if this transaction have pelanty
+                                        // Check if in env there is loanExpDays
                                         if(!empty(env('loanExpDays'))){
                                             $loanedDate = Carbon::createFromFormat('Y-m-d', $value->transaction_loaned_at);
-                                            $threeDaysNext = $loanedDate->addDays(env('loanExpDays'))->format('Y-m-d');
+                                            $dueDate = $loanedDate->addDays(env('loanExpDays'))->format('Y-m-d');
                                             $now = date('Y-m-d');
-                                            if($now > $threeDaysNext){
+                                            // $now = "2023-09-19";
+
+                                            $Blacklist_days = ['Saturday','Sunday'];
+                                            $blacklistDueDate = in_array(Carbon::createFromFormat("Y-m-d", $dueDate)->format("l"),$Blacklist_days);
+                                            if($blacklistDueDate){
+                                               // Get the date
+                                                $dueDate = $loanedDate;
+
+                                                // Calculate the days until the next Monday (0 = Sunday, 1 = Monday, 2 = Tuesday, etc.)
+                                                $daysUntilMonday = 7 - $dueDate->dayOfWeek + 1;
+
+                                                // Add the days to the get the next Monday
+                                                $nextMonday = $dueDate->addDays($daysUntilMonday);
+
+                                                // Set ulang tanggalnya ke hari senin jika masa peminjaman berakhir di sabtu minggu
+                                                $dueDate = $nextMonday->format('Y-m-d');
+                                            }
+
+                                            if($now > $dueDate){
                                                 // Calculate the difference between the two dates.
-                                                $diff = Carbon::createFromFormat('Y-m-d', $threeDaysNext)->diff($now);
+                                                $diff = Carbon::createFromFormat('Y-m-d', $dueDate)->diff($now);
                                                 // i add + 1 supaya jika 3 hari setelah peminjaman adalah 17 dan hari ini 18, maka akan dihitung telat 1 hari, karna carbon tidak menganggap 17 dan 18 itu selisih 1 haari, kecuali di hari berikutnya 17 dan 19 ituadalah selisih 1 hari
                                                 $penaltyCost = ($diff->days + 1) * env('penaltyCost');
                                                 $isTitlePenaltySet = true;
