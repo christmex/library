@@ -47,10 +47,12 @@ class PenaltyResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction.transaction_loaned_at')
                     ->label('Loaned At')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction.transaction_returned_at')
-                ->label('Returned At')
+                    ->label('Returned At')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\SelectColumn::make('penalty_status')
