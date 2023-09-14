@@ -35,25 +35,33 @@ class ListTransactions extends ListRecords
                         // $dueDate = Carbon::createFromFormat('Y-m-d',Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->addDays(env('loanExpDays'))->format('Y-m-d'));
 
                         $loanedDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
+                        // $loanedDate =Carbon::createFromFormat('Y-m-d', '2023-09-12');
                         $dueDate = $loanedDate->addDays(env('loanExpDays'))->format('Y-m-d');
                         $Blacklist_days = ['Saturday','Sunday'];
-
-
-
+                        
+                        
                         $blacklistDueDate = in_array(Carbon::createFromFormat("Y-m-d", $dueDate)->format("l"),$Blacklist_days);
-                        // dd($blacklistDueDate);
+                        
+                        
                         if($blacklistDueDate){
+                            
+                            $specificDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d')); // Ganti dengan tanggal yang Anda inginkan
+                            $nextMonday = $specificDate->next('Monday');
+                            // $nextMondayFormatted = $nextMonday->format('Y-m-d');
+
                             // Get the date
-                            $dueDate = $loanedDate;
+                            // $dueDate = $loanedDate;
 
                             // Calculate the days until the next Monday (0 = Sunday, 1 = Monday, 2 = Tuesday, etc.)
-                            $daysUntilMonday = 7 - $dueDate->dayOfWeek + 1;
+                            // $daysUntilMonday = 7 - $dueDate->dayOfWeek + 1;
+
 
                             // Add the days to the get the next Monday
-                            $nextMonday = $dueDate->addDays($daysUntilMonday);
+                            // $nextMonday = $dueDate->addDays($daysUntilMonday);
 
                             // Format the date as a string if needed
                             $dueDate = $nextMonday->format('Y-m-d');
+                            // dd($dueDate);
                             // 
                         }
                         

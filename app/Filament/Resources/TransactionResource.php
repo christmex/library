@@ -211,14 +211,17 @@ class TransactionResource extends Resource
                                             $Blacklist_days = ['Saturday','Sunday'];
                                             $blacklistDueDate = in_array(Carbon::createFromFormat("Y-m-d", $dueDate)->format("l"),$Blacklist_days);
                                             if($blacklistDueDate){
-                                               // Get the date
-                                                $dueDate = $loanedDate;
+                                            //    // Get the date
+                                            //     $dueDate = $loanedDate;
 
-                                                // Calculate the days until the next Monday (0 = Sunday, 1 = Monday, 2 = Tuesday, etc.)
-                                                $daysUntilMonday = 7 - $dueDate->dayOfWeek + 1;
+                                            //     // Calculate the days until the next Monday (0 = Sunday, 1 = Monday, 2 = Tuesday, etc.)
+                                            //     $daysUntilMonday = 7 - $dueDate->dayOfWeek + 1;
 
-                                                // Add the days to the get the next Monday
-                                                $nextMonday = $dueDate->addDays($daysUntilMonday);
+                                            //     // Add the days to the get the next Monday
+                                            //     $nextMonday = $dueDate->addDays($daysUntilMonday);
+
+                                                // $specificDate = Carbon::createFromDate(date('Y'), date('m'), date('d')); // Ganti dengan tanggal yang Anda inginkan
+                                                $nextMonday = $loanedDate->next('Monday');
 
                                                 // Set ulang tanggalnya ke hari senin jika masa peminjaman berakhir di sabtu minggu
                                                 $dueDate = $nextMonday->format('Y-m-d');
