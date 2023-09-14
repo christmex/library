@@ -70,6 +70,13 @@ class Book extends Model
     {
         return $this->belongsTo(Publisher::class);
     }
+    /**
+     * The book source that belong to the book.
+     */
+    public function bookSource(): BelongsTo
+    {
+        return $this->belongsTo(BookSource::class);
+    }
 
     // public function authors(){
     //     return $this->belongsTo(Author::class,'book_authors','id');

@@ -106,6 +106,12 @@ class BookResource extends Resource
                                     ->createOptionForm(self::publishersForm())
                                     ->editOptionForm(self::publishersForm())
                                     ->searchable(),
+                                Forms\Components\Select::make('book_source_id')
+                                    ->relationship(name: 'bookSource', titleAttribute: 'book_source_name')
+                                    ->createOptionForm(self::bookSourcesForm())
+                                    ->editOptionForm(self::bookSourcesForm())
+                                    ->preload()
+                                    ->searchable(),
                             ])
                     ])
             ])->columns(3);
@@ -137,6 +143,9 @@ class BookResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('publisher.publisher_name')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('bookSource.book_source_name')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bookTypes.book_type_name')
@@ -296,6 +305,12 @@ class BookResource extends Resource
     public static function publishersForm(){
         return [
             Forms\Components\TextInput::make('publisher_name')
+                ->required()->unique(ignoreRecord: true),
+        ];
+    }
+    public static function bookSourcesForm(){
+        return [
+            Forms\Components\TextInput::make('book_source_name')
                 ->required()->unique(ignoreRecord: true),
         ];
     }
