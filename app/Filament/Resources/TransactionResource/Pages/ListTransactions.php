@@ -189,10 +189,26 @@ class ListTransactions extends ListRecords
                     }else {
                         $selectBookStock->qty -= $data['qty'];
                         $selectBookStock->save();
+
+                        // This for count when the book should return based on when the user loan the book
+                        $loanedDate = Carbon::createFromFormat('Y-m-d', $data['transaction_loaned_at']);
+                        $dueDate = $loanedDate->addDays(env('loanExpDays'))->format('Y-m-d');
+                        $Blacklist_days = ['Saturday','Sunday'];
+                        
+                        $blacklistDueDate = in_array(Carbon::createFromFormat("Y-m-d", $dueDate)->format("l"),$Blacklist_days);
+                        
+                        if($blacklistDueDate){
+                            $specificDate = Carbon::createFromFormat('Y-m-d', $data['transaction_loaned_at']); // Ganti dengan tanggal yang Anda inginkan
+                            $nextMonday = $specificDate->next('Monday');
+                            $dueDate = $nextMonday->format('Y-m-d');
+                        }
+                        // This for count when the book should return based on when the user loan the book
+
                         Transaction::create([
                             'book_stock_id' => $selectBookStock->id,
                             'member_id' => $data['member_id'],
                             'transaction_book_qty' => $data['qty'],
+                            'should_return_at' => $dueDate,
                             'transaction_loaned_at' => $data['transaction_loaned_at'],
                         ]);
                         DB::commit();

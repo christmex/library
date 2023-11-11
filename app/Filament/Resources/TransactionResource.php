@@ -162,6 +162,8 @@ class TransactionResource extends Resource
                     ->label('Loaned At')
                     ->date()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('should_return_at')
+                    ->date(),
                 Tables\Columns\TextColumn::make('transaction_returned_at')
                     ->label('Returned At')
                     ->date()
