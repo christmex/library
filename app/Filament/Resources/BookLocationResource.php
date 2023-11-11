@@ -49,6 +49,10 @@ class BookLocationResource extends Resource
                     ->bulleted()
                     // ->wrap()
                     ->searchable(),
+                // Tables\Columns\TextColumn::make('book_stock_count')->counts('bookStock'),
+                Tables\Columns\TextColumn::make('book_stock_sum_qty')
+                    ->sum('bookStock','qty')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->sortable()

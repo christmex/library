@@ -166,7 +166,7 @@ class BookResource extends Resource
                     // ->wrap()
                     ->listWithLineBreaks()
                     ->bulleted()
-                    ->searchable(),
+                    ->searchable(isIndividual:true),
                 Tables\Columns\TextColumn::make('bookStocks.user.name')
                     ->searchable()
                     ->sortable()
