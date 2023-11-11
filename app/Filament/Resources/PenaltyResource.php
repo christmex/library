@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PenaltyResource\Pages;
-use App\Filament\Resources\PenaltyResource\RelationManagers;
-use App\Models\Penalty;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Penalty;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\PenaltyResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PenaltyResource\RelationManagers;
 
 class PenaltyResource extends Resource
 {
@@ -80,7 +81,12 @@ class PenaltyResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                //
+                SelectFilter::make('penalty_status')
+                    ->options([
+                        'unpaid' => 'Unpaid',
+                        'paid' => 'Paid',
+                        'free' => 'Free',
+                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
