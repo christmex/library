@@ -16,6 +16,7 @@ use Filament\Tables\Columns\Summarizers\Sum;
 use App\Filament\Resources\BookResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\BookResource\RelationManagers;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class BookResource extends Resource
 {
@@ -244,6 +245,7 @@ class BookResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()->deselectRecordsAfterCompletion(),
+                    ExportBulkAction::make(),
                 ]),
             ])
             // ->headerActions([

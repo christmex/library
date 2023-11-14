@@ -14,6 +14,7 @@ use Illuminate\Validation\Rules\Unique;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\BookLocationResource\Pages;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\BookLocationResource\RelationManagers;
 
 class BookLocationResource extends Resource
@@ -86,6 +87,7 @@ class BookLocationResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make(),
                     // Tables\Actions\BulkAction::make('printBookLocation')
                     // ->url(fn (Collection $records): string => route('print_book_label', ['records' => $records]))
                     // ->action(function(Collection $records){
