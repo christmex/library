@@ -145,7 +145,7 @@ class TransactionResource extends Resource
                     ->label('Member name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('member.department_name')
+                Tables\Columns\TextColumn::make('member.department.department_name')
                     ->label('Member Department')
                     ->searchable()
                     ->sortable(),
