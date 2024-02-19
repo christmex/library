@@ -54,6 +54,20 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->sidebarCollapsibleOnDesktop();
+            ->brandLogo(asset('logo_basic_digital.svg'))
+            ->brandLogoHeight('1rem')
+            ->sidebarCollapsibleOnDesktop()
+            ->spa()
+            ->breadcrumbs(false)
+            ->font('Sansation')
+            ->colors([
+                'danger' => '#e63946',
+                'gray' => Color::Gray,
+                'info' => '#457b9d',
+                'primary' => '#E65C00',
+                'success' => Color::Emerald,
+                'warning' => '#ffb703',
+            ])
+            ;
     }
 }
