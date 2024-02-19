@@ -74,6 +74,8 @@ class ListTransactions extends ListRecords
                     // ->options(Member::pluck('member_name','id'))
                         ->relationship(name: 'member', titleAttribute: 'member_name')
                         ->label('Member Name')
+                        ->preload()
+                        ->optionsLimit(10)
                         ->createOptionForm([
                             \Filament\Forms\Components\Select::make('department_id')
                                 ->relationship(name: 'department', titleAttribute: 'department_name')
@@ -142,6 +144,8 @@ class ListTransactions extends ListRecords
                         ->options(Book::query()->whereHas('bookStocks',fn($q) => $q->where('qty','>',0))->pluck('book_name', 'id'))
                         ->searchable()
                         ->required()
+                        ->preload()
+                        ->optionsLimit(10)
                         ->live()
                         ,
                     \Filament\Forms\Components\Select::make('book_location_id')
@@ -153,15 +157,15 @@ class ListTransactions extends ListRecords
                             
                             return BookLocation::whereIn('id',$bookLocationId)->pluck('book_location_name','id');
                         })
-                        ->visible(fn (Get $get): ?bool => $get('book_id'))
+                        // ->visible(fn (Get $get): ?bool => $get('book_id'))
                         ->searchable()
                         ->live()
                         ->required(),
                     \Filament\Forms\Components\TextInput::make('qty')
                         ->numeric()
-                        // ->default(1) // if we are set this it will show previous field so it wont hide previous field
+                        ->default(1) // if we are set this it will show previous field so it wont hide previous field
                         ->minValue(1)
-                        ->visible(fn (Get $get): ?bool => $get('book_location_id'))
+                        // ->visible(fn (Get $get): ?bool => $get('book_location_id'))
                         ->live()
                         ->required(),
                     \Filament\Forms\Components\DatePicker::make('transaction_loaned_at')
@@ -172,13 +176,17 @@ class ListTransactions extends ListRecords
                         ->closeOnDateSelection()
                         ->default(now())
                         ->maxDate(now())
-                        ->visible(fn (Get $get): ?bool => $get('qty'))
+                        // ->visible(fn (Get $get): ?bool => $get('qty'))
                         ->required(),
                 // ])
             ])
             ->action(function(array $data){
+                
                 DB::beginTransaction();
                 try {
+                    if( Transaction::where('member_id', $data['member_id'])->where('transaction_returned_at',NULL)->get()->count()){
+                        throw new \Exception('There is active trasaction for this member');
+                    }
                     $selectBookStock = BookStock::where('book_id',$data['book_id'])->where('book_location_id',$data['book_location_id'])->first();
                     // check if the qty from user bigger than actual stock
                     if($data['qty'] > $selectBookStock->qty){
